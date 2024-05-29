@@ -7,8 +7,20 @@ string dl_link;
 
 int num_menu;
 
+std::string extractFileType(const std::string& url) {
+    size_t pos = url.find_last_of(".");
+    if (pos != std::string::npos) {
+        return url.substr(pos + 1);
+    }
+    else {
+        return "Unknown";
+    }
+}
+
 int main()
 {
+    std::string fileType;
+
     std::cout << "Welcome to CPP Downloader!" << std::endl;
     std::cout << "1. Download Files ..." << std::endl;
     std::cout << "2. About Application ...\n" << std::endl;
@@ -24,7 +36,8 @@ int main()
         std::cin >> dl_link;
 
         std::string url = dl_link;
-        std::string output = "downloaded_file.mp3";
+        fileType = extractFileType(url);
+        std::string output = "downloaded_file." + fileType;
 
         // Use the Windows command prompt to download the file
         std::string command = "curl -o " + output + " " + url;
