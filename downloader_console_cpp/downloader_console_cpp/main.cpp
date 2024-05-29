@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -6,10 +7,21 @@ string dl_link;
 
 int main()
 {
-	std::cout << "Hello! Welcome to File Downloader. \n" << endl;
-	std::cout << "Please Copy your File Here: ";
-	std::cin >> dl_link;
-	std::cout << "\n";
-	std::cout << "Your Link is: " << dl_link;
-	return 0;
+    std::string url = "http://example.com/file.txt";
+    std::string output = "downloaded_file.txt";
+
+    // Use the Windows command prompt to download the file
+    std::string command = "curl -o " + output + " " + url;
+
+    // Execute the command using system call
+    int result = system(command.c_str());
+
+    if (result == 0) {
+        std::cout << "File downloaded successfully." << std::endl;
+    }
+    else {
+        std::cout << "Error downloading file." << std::endl;
+    }
+
+    return 0;
 }
