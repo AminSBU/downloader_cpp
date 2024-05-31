@@ -1,5 +1,6 @@
 #include <iostream>
-#include <stdlib.h>
+#include <string>
+#include <cstdlib>
 
 using namespace std;
 
@@ -37,19 +38,29 @@ int main()
 
         std::string url = dl_link;
         fileType = extractFileType(url);
-        std::string output = "downloaded_file." + fileType;
+        // Get the current user's profile directory
+        char* userProfile = nullptr;
+        size_t len = 0;
+        if (_dupenv_s(&userProfile, &len, "USERPROFILE") == 0 && userProfile != nullptr) {
+            std::string output = std::string(userProfile) + "\\Downloads\\downloaded_file." + fileType; // Specify the folder path
 
-        // Use the Windows command prompt to download the file
-        std::string command = "curl -o " + output + " " + url;
+            // Use the Windows command prompt to download the file
+            std::string command = "curl -o \"" + output + "\" " + url;
 
-        // Execute the command using system call
-        int result = system(command.c_str());
+            // Execute the command using system call
+            int result = system(command.c_str());
 
-        if (result == 0) {
-            std::cout << "File downloaded successfully." << std::endl;
+            if (result == 0) {
+                std::cout << "File downloaded successfully." << std::endl;
+            }
+            else {
+                std::cout << "Error downloading file." << std::endl;
+            }
+
+            free(userProfile); // Free the memory allocated by _dupenv_s
         }
         else {
-            std::cout << "Error downloading file." << std::endl;
+            std::cout << "Error: Cannot retrieve user profile directory." << std::endl;
         }
     }
     break;
