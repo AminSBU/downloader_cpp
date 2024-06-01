@@ -33,6 +33,26 @@ int main()
     {
     case 1:
     {
+        std::cout << "checking your internet connection ..." << std::endl;
+        std::cout << "please wait ..." << std::endl;
+
+        // Use the Windows command prompt to download the file
+        std::string command = "ping -c 1 google.com > NULL"; // Redirect output to /dev/null
+    
+        // Execute the command using system call
+        int result = system(command.c_str());
+
+        if (result == 0) {
+            std::cout << "Connection is ok. " << std::endl;
+        }
+        else {
+            std::cout << "Error checking internet connection." << std::endl;
+        }
+    }
+    break;
+
+    case 2:
+    {
         std::cout << "paste your download link: " << std::endl;
         std::cin >> dl_link;
 
