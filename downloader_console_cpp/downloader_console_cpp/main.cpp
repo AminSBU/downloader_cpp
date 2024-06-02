@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <cstdlib>
 
@@ -36,14 +37,35 @@ int main()
         std::cout << "checking your internet connection ..." << std::endl;
         std::cout << "please wait ..." << std::endl;
 
-        // Use the Windows command prompt to download the file
-        std::string command = "ping -c 1 google.com > NULL"; // Redirect output to /dev/null
-    
+        // Create a connection to www.google.com
+        std::string url = "www.google.com";
+        std::string command = "curl -s -o webpage.html " + url;
+
         // Execute the command using system call
         int result = system(command.c_str());
 
         if (result == 0) {
-            std::cout << "Connection is ok. " << std::endl;
+            std::ifstream file("webpage.html");
+            std::string line;
+            bool connectionLost = true;
+
+            while (std::getline(file, line)) {
+                if (line.find("HTML") != std::string::npos) {
+                    connectionLost = false;
+                    break;
+                }
+            }
+
+            file.close();
+
+            if (!connectionLost) {
+                std::cout << "Connection is ok." << std::endl;
+
+                num_menu = 2;
+            }
+            else {
+                std::cout << "Connection is lost." << std::endl;
+            }
         }
         else {
             std::cout << "Error checking internet connection." << std::endl;
