@@ -33,3 +33,6 @@
 downloader_console_cpp/.vs/downloader_console_cpp/v16/Browse.VC.db-shm
 downloader_console_cpp/.vs/downloader_console_cpp/v16/Browse.VC.db-wal
 downloader_console_cpp/.vs/downloader_console_cpp/v16/Browse.VC.opendb
+*.vs/
+*Debug/
+*.vcxproj
