@@ -27,7 +27,6 @@
 *.lib
 
 # Executables
-*.exe
 *.out
 *.app
 downloader_console_cpp/.vs/downloader_console_cpp/v16/Browse.VC.db-shm
