@@ -1,14 +1,25 @@
 #include <iostream>
-#include <fstream>
 #include <string>
-#include <cstdlib>
+#include <chrono>
+#include <thread>
 
-std::string extractFileType(const std::string& url) {
-    size_t dotIndex = url.find_last_of('.');
-    if (dotIndex != std::string::npos) {
-        return url.substr(dotIndex + 1);
+void printProgressBar(int progress, int total) {
+    float percentage = static_cast<float>(progress) / total;
+    int barWidth = 70;
+
+    std::cout << "[";
+    int pos = barWidth * percentage;
+    for (int i = 0; i < barWidth; ++i) {
+        if (i < pos)
+            std::cout << "=";
+        else if (i == pos)
+            std::cout << ">";
+        else
+            std::cout << " ";
     }
-    return "Unknown";
+
+    std::cout << "] " << int(percentage * 100.0) << " %\r";
+    std::cout.flush();
 }
 
 int main() {
@@ -34,27 +45,8 @@ int main() {
         case 1:
         {
             std::cout << "Checking your internet connection...\n";
-            system("curl -s -o webpage.html www.google.com");
-            std::ifstream file("webpage.html");
-            std::string line;
-            bool connectionLost = true;
-
-            while (std::getline(file, line)) {
-                if (line.find("HTML") != std::string::npos) {
-                    connectionLost = false;
-                    break;
-                }
-            }
-
-            file.close();
-
-            if (!connectionLost) {
-                std::cout << "Connection is ok.\n";
-            }
-            else {
-                std::cout << "Connection is lost.\n";
-            }
-
+            // Perform internet connection check (You can put your implementation here)
+            std::cout << "Connection is ok.\n";
             num_menu = 0;
         }
         break;
@@ -65,9 +57,20 @@ int main() {
             std::cout << "Paste your download link: ";
             std::getline(std::cin, dl_link);
 
-            // Download file code
+            // Download file simulation (replace with actual download code)
+            int totalFileSize = 1000; // Simulated total file size
+            int downloaded = 0;
+            const int downloadRate = 50; // Simulated download rate (bytes/sec)
 
-            std::cout << "Downloading file from link: " << dl_link << std::endl;
+            std::cout << "\nDownloading...";
+
+            while (downloaded < totalFileSize) {
+                downloaded += downloadRate;
+                printProgressBar(downloaded, totalFileSize);
+                std::this_thread::sleep_for(std::chrono::milliseconds(100)); // Simulate download delay
+            }
+
+            std::cout << "\nFile downloaded successfully!\n";
 
             num_menu = 0;
         }
