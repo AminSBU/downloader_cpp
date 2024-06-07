@@ -22,6 +22,27 @@ void printProgressBar(int progress, int total) {
     std::cout.flush();
 }
 
+std::string getFileType(const std::string& dl_link) {
+    size_t dotIndex = dl_link.find_last_of(".");
+    if (dotIndex != std::string::npos) {
+        return dl_link.substr(dotIndex);
+    }
+    return ""; // Return empty string if file type cannot be determined
+}
+
+void downloadFile(const std::string& dl_link) {
+    std::string file_type = getFileType(dl_link);
+    std::string command = "curl -k -o filename.mp3" + file_type + " " + dl_link; // Replace filename.ext with the desired file name and extension
+    int result = system(command.c_str());
+
+    if (result == 0) {
+        std::cout << "\nFile downloaded successfully and saved as filename.ext in the project directory!\n";
+    }
+    else {
+        std::cout << "\nFailed to download the file. Please try again.\n";
+    }
+}
+
 int main() {
     int num_menu = 0;
     std::string dl_link;
@@ -69,7 +90,7 @@ int main() {
                 printProgressBar(downloaded, totalFileSize);
                 std::this_thread::sleep_for(std::chrono::milliseconds(100)); // Simulate download delay
             }
-
+            downloadFile(dl_link);
             std::cout << "\nFile downloaded successfully!\n";
 
             num_menu = 0;
