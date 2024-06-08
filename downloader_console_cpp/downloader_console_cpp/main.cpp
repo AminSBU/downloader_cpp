@@ -30,9 +30,9 @@ std::string getFileType(const std::string& dl_link) {
     return ""; // Return empty string if file type cannot be determined
 }
 
-void downloadFile(const std::string& dl_link) {
+void downloadFile(const std::string& dl_link, const std::string& filename) {
     std::string file_type = getFileType(dl_link);
-    std::string command = "curl -k -o filename.mp3" + file_type + " " + dl_link; // Replace filename.ext with the desired file name and extension
+    std::string command = "curl -k -o " + filename + file_type + " " + dl_link + " > NUL"; // Replace filename.ext with the desired file name and extension
     int result = system(command.c_str());
 
     if (result == 0) {
@@ -77,6 +77,9 @@ int main() {
             std::cin.ignore(); // Clear the input buffer
             std::cout << "Paste your download link: ";
             std::getline(std::cin, dl_link);
+            std::string filename;
+            std::cout << "Enter the filename (without extension): ";
+            std::cin >> filename;
 
             // Download file simulation (replace with actual download code)
             int totalFileSize = 1000; // Simulated total file size
@@ -90,7 +93,7 @@ int main() {
                 printProgressBar(downloaded, totalFileSize);
                 std::this_thread::sleep_for(std::chrono::milliseconds(100)); // Simulate download delay
             }
-            downloadFile(dl_link);
+            downloadFile(dl_link, filename);
             std::cout << "\nFile downloaded successfully!\n";
 
             num_menu = 0;
